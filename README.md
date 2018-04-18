@@ -1,1 +1,1 @@
-# CouchPotatoFinalProject
+# Couch-Potato-Final

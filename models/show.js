@@ -32,6 +32,12 @@ module.exports = function(sequelize, DataTypes) {
       image: {
         type: DataTypes.TEXT,
         allowNull: true
+      }, 
+
+      createdAt: { 
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW  // Now is equivalent to CurrentTime but takes lesser memory space
       }
     });
   

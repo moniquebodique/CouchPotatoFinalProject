@@ -2,6 +2,7 @@
 // api-routes.js - this file offers a set of routes for displaying and saving data to the db
 // *********************************************************************************
 var path = require("path");
+
 // Dependencies
 // Grabbing our models
 
@@ -18,35 +19,60 @@ module.exports = function(app) {
     });
   });
 
+  function isIdUnique (id) {
+    return db.User.count({ where: { username: id } })
+      .then(count => {
+        if (count != 0) {
+          return false;
+        }
+        return true;
+    });
+  }
+
   // POST route for saving a new user. You can create a user using the data on req.body
   app.post("/api/new", function(req, res) {
-    
-    db.User.create({
-      text: req.body.name,
-      fullname: req.body.complete,
-      username: req.body.complete,
-      email: req.body.complete,
-      password: req.body.complete
-    }).then(function(Show) {  
-      
-    res.redirect("/main")
-      //res.sendFile(path.join(__dirname+"/../view/main.html"));
-      // res.json(Show);  
+    if (req.body.username==""){
      
-    });
+    }else{
+      isIdUnique(req.body.username).then(isUnique => {
+        if (isUnique) {
+          console.log("is unique")
+          console.log(req.body);
+          db.User.create({
+            // text: req.body.name,
+            username: req.body.username,
+            password: req.body.password
+          }).then(function() {  
+            res.redirect("/main");
+          }).catch(function(err) {
+            console.log(err);
+              res.json(err);
+          
+          });
+        } else {
+          //res.redirect("/")
+        }
+      });
+    }
   });
 
+  app.post('/signin',
+  // passport.authenticate('local'),
+  function(req, res) {
+    res.redirect('/main/'+ req.user.username);
+  });
 
   app.get("/api/rec", function(req, res) {
     db.Show.findAll({
-      where: {
-        genres: '["Food"]'
-      }
+      // where: {
+      //   genres: '["Food"]'
+      // }
     }).then(function(Show) {
-      // We have access to the todos as an argument inside of the callback function
       res.json(Show);
     });
   });
+
+ 
 
   // // DELETE route for deleting todos. You can access the todo's id in req.params.id
   // app.delete("/api/todos/:id", function(req, res) {

@@ -20,21 +20,41 @@ $(document).ready(function() {
 
 // Loop through and provide the tv shows
      for (var i = 0; i < data.length; i++) {
-          console.log(data[i].name)
-          console.log(data[i].genres)
-        // rowsToAdd.push(createtvshows(data[i]));
-          showImage = data[i].iamge;
-          showArray.push(showImage);
+      console.log(data[i].name)
+      console.log(data[i].genres)
+    // rowsToAdd.push(createtvshows(data[i]));
+      showImage = data[i].image;
+      showArray.push(showImage);
 
-          showName = data[i].name;
-          showArray.push(showName);
+      showName = data[i].name;
+      showArray.push(showName);
 
-          showGenres = data[i].genres;
-          showArray.push(showGenres);
+      showGenres = data[i].genres;
+      showArray.push(showGenres);
+      var animalDiv = $("<div>");
+        var pBlank=$("<p>").text("");
+        var p = $("<p>").text("Name: " + data[i].name);
+        if (data[i].genres=="[]"){
+          var pGenres = $("<p>").text("Genres: Not Categorized");
+        } else{
+          var pGenres = $("<p>").text("Genres: " + data[i].genres);
+        }
+
+        // Creating and storing an image tag
+        
+        var animalImage = $("<img>");
+        // Setting the src attribute of the image to a property pulled off the result item
+        animalImage.attr("src", data[i].image);
+        animalDiv.append(pBlank);
+        animalDiv.append(pBlank);
+        animalDiv.append(p);
+        animalDiv.append(pGenres);
+        animalDiv.append(animalImage);
+      $("#tvshows").prepend(animalDiv);
       }
 
 
-       $("#tvshows").append("<p>" + showArray + "</p>");
+       //$("#tvshows").append("<p>" + showArray + "</p>");
       // rendertvshows(rowsToAdd);
       // nameInput.val("");
     });
